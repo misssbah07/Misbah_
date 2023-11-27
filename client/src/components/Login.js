@@ -1,34 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useState, useEffect } from "react";
+import { useResource } from "react-request-hook";
 
-export default function Login({dispatch}) {
+export default function Login({ dispatch }) {
   // State to manage form inputs
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginFailed, setLoginFailed] = useState(false);
 
   const [user, loginUser] = useResource((username, password) => ({
-    url: '/login',
-    method: 'post',
-    data: {email: username, password}
-  }))
+    url: "/auth/login",
+    method: "post",
+    data: { username, password },
+  }));
 
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    loginUser(username, password)
-
-    // Additional logic for authentication can be added here
-    console.log('Username:', username);
-    console.log('Password:', password);
+    loginUser(username, password);
   };
 
   useEffect(() => {
     // Dispatch the 'LOGIN' action with the entered username
-    if (user && user.data) {
-    dispatch({ type: 'LOGIN', loginUser: user.data.user.email });
+    if (user && user.isLoading === false && (user.data || user.error)) {
+      if (user.error) {
+        setLoginFailed(true);
+      } else {
+        setLoginFailed(false);
+        dispatch({
+          type: "LOGIN",
+          username: username,
+          access_token: user.data.access_token,
+        });
+      }
     }
-  }, [user])
+  }, [user]);
 
   return (
     <div>
@@ -36,7 +42,7 @@ export default function Login({dispatch}) {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
-          <br/>
+          <br />
           <input
             type="text"
             id="username"
@@ -47,7 +53,7 @@ export default function Login({dispatch}) {
         </div>
         <div>
           <label htmlFor="password">Password:</label>
-          <br/>
+          <br />
           <input
             type="password"
             id="password"
@@ -56,10 +62,12 @@ export default function Login({dispatch}) {
             required
           />
         </div>
-        <button type="submit" className='btn btn-primary mt-2'>Login</button>
+        <button type="submit" className="btn btn-primary mt-2">
+          Login
+        </button>
       </form>
     </div>
   );
-};
+}
 
 // export default Login;

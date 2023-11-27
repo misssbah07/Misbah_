@@ -1,42 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useEffect, useState } from "react";
+import { useResource } from "react-request-hook";
 
-const Registration = ({dispatch}) => {
+const Registration = ({ dispatch }) => {
   // State to manage form inputs
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [status, setStatus] = useState("");
 
   const [user, registerUser] = useResource((username, password) => ({
-    url: '/register',
-    method: 'post',
-    data: {email: username, password}
-  }))
+    url: "/auth/register",
+    method: "post",
+    data: { username, password, passwordConfirmation: password },
+  }));
 
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    registerUser(username, password)
-
-    // Additional logic for registration can be added here
-    console.log('Username:', username);
-    console.log('Password:', password);
+    registerUser(username, password);
   };
 
   useEffect(() => {
-    // Dispatch the 'REGISTER' action with the entered username
-    if (user && user.data) {
-      console.log(user.data)
-      dispatch({ type: 'REGISTER', registerUser: user.data.user.email });
+    if (user && user.isLoading === false && (user.data || user.error)) {
+      if (user.error) {
+        setStatus("Registration failed, please try again later.");
+      } else {
+        setStatus("Registration successful. You may now login.");
+      }
     }
-  }, [user])
+  }, [user]);
   return (
     <div>
       <h2>Register</h2>
+      <p>{status}</p>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="registration-username">Username:</label>
-          <br/>
+          <br />
           <input
             type="text"
             id="registration-username"
@@ -47,7 +47,7 @@ const Registration = ({dispatch}) => {
         </div>
         <div>
           <label htmlFor="registration-password">Password:</label>
-          <br/>
+          <br />
           <input
             type="password"
             id="registration-password"
@@ -56,7 +56,9 @@ const Registration = ({dispatch}) => {
             required
           />
         </div>
-        <button type="submit" className='btn btn-success mt-2'>Register</button>
+        <button type="submit" className="btn btn-success mt-2">
+          Register
+        </button>
       </form>
     </div>
   );
