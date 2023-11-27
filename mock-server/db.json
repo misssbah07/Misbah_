@@ -1,0 +1,30 @@
+{
+  "todos": [
+    {
+      "id": "8dfcb01f-0942-4434-962c-64f4b07c2a79",
+      "title": "delete ",
+      "description": "delete again ",
+      "author": "hello@hello.com",
+      "dateCreated": 1701090699315,
+      "complete": true,
+      "dateCompleted": 1701090964259
+    }
+  ],
+  "users": [
+    {
+      "email": "a212ud@test.com",
+      "password": "$2a$10$77N3wtsBvOtHPKDsCc/R3.g270nN0Q3XAYdzsnAZQBvvdxEJzmrOe",
+      "id": 1
+    },
+    {
+      "email": "hello@hello.com",
+      "password": "$2a$10$1Bk2Vww3TRWcfJyu9sJiM.W.WVuX.MUlbBg0SdKwAnOCFrP/hdpJy",
+      "id": 2
+    },
+    {
+      "email": "again@qwerty.com",
+      "password": "$2a$10$.zooLaLxQsLCdXYZ5OkpdOTCUcoHpaNNCpr6n9fUOF1qZK6Pp3q2W",
+      "id": 3
+    }
+  ]
+}
