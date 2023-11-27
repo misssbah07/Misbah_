@@ -7,7 +7,7 @@ import { RequestProvider } from "react-request-hook";
 import { StateProvider } from "./contexts";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.SERVER_URL || "http://localhost:3000/api",
+  baseURL: process.env.REACT_APP_SERVER_URL || "http://localhost:3000/api",
 });
 
 // Wrap the StateProvider around the RequestProvider and App components
